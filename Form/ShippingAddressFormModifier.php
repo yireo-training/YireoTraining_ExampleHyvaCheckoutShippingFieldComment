@@ -14,7 +14,12 @@ class ShippingAddressFormModifier implements EntityFormModifierInterface
             'YireoTraining_ExampleHyvaCheckoutShippingFieldComment::formShippingUpdated',
             'form:shipping:updated',
             function(EntityFormInterface $form, MagewireAddressFormInterface $addressComponent) {
-                $value = $form->getField('comment')->getValue();
+                $field = $form->getField('comment');
+                if (!$field) {
+                    return $form;
+                }
+
+                $value = $field->getValue();
                 $addressComponent->getAddressType()->getQuoteAddress()->setData('comment', $value);
                 return $form;
             }
